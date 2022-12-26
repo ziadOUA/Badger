@@ -35,8 +35,8 @@ def badger():
 
     badge_user_input()
     badge_lister()
-    badge_comparator()
     print('')
+    badge_comparator()
     html_tag_printer()
 
 
