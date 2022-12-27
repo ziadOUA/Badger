@@ -9,7 +9,7 @@ import zipfile
 import shutil
 
 from pyfiglet import Figlet
-from colorama import Fore, Back,init
+from colorama import Fore, Back, init
 
 init(convert=True)
 
@@ -35,7 +35,6 @@ def badger():
 
     badge_user_input()
     badge_lister()
-    print('')
     badge_comparator()
     html_tag_printer()
 
@@ -78,19 +77,24 @@ def badge_comparator():
 def html_tag_printer():
     badge_list.sort()
     folder_names.sort()
-    print('')
-    for i in folder_names:
-        for j in range(3):
-            badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{j + 1}{svg_extension}">'
-            print(badge_tag)
+    if len(badge_list) > 0:
+        new_line()
+        for i in folder_names:
+            for j in range(3):
+                badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{j + 1}{svg_extension}">'
+                print(badge_tag)
 
 
 def error(error_type=None):
     if error_type == 'zip_fetch':
-        print(f'{Fore.RED}Failed to fetch the badge list{Fore.RESET}')
+        print(f'{Fore.RED}Failed to fetch the badge list{Fore.RESET}', end='\n\n')
         print('The program will close in 3 seconds')
         time.sleep(3)
         exit()
+
+
+def new_line():
+    print('')
 
 
 if __name__ == '__main__':
@@ -102,15 +106,16 @@ if __name__ == '__main__':
         folder_names = []
         valid = False
         done = False
-        print(start.renderText('badger'))
+        print(start.renderText('Badger'))
         try:
             zip_fetcher()
         except zipfile.BadZipfile:
             error(error_type='zip_fetch')
-        print(f'ziadOUA : There are {Back.WHITE + Fore.BLACK}{len(next(os.walk(badge_list_dir))[1])}{Back.RESET + Fore.RESET} badges available !')
-        print('')
+        badge_number = len(next(os.walk(badge_list_dir))[1])
+        print(f'There are {Back.WHITE + Fore.BLACK}{badge_number}{Back.RESET + Fore.RESET} badges available !')
+        new_line()
         badger()
-        print('')
+        new_line()
         while not valid:
             is_user_done = input('Leave ?\n Y: yes\n N: no\n>>> ')
             if is_user_done in ['y', 'Y']:
@@ -120,6 +125,6 @@ if __name__ == '__main__':
                 valid = True
                 done = False
 
-print(start.renderText('badger'))
+print(start.renderText('Badger'))
 time.sleep(3)
 exit()
