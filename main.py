@@ -37,6 +37,7 @@ def badger():
     badge_lister()
     badge_comparator()
     html_tag_printer()
+    markdown()
 
 
 def badge_user_input():
@@ -83,6 +84,25 @@ def html_tag_printer():
             for j in range(3):
                 badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{j + 1}{svg_extension}">'
                 print(badge_tag)
+
+
+def markdown():
+
+    global valid
+
+    new_line()
+    while not valid:
+        is_markdown_mode = input('Print the markdown table for theses badges ?\n Y: yes\n N: no\n>>> ')
+        if is_markdown_mode in ['y', 'Y']:
+            valid = True
+            new_line()
+            for i in folder_names:
+                for j in range(3):
+                    badge_tag = f'| <img src="{base_link}/{i}/{i.lower()}{j + 1}{svg_extension}"> | `{base_link}/{i}/{i.lower()}{j + 1}{svg_extension}` |'
+                    print(badge_tag)
+        elif is_markdown_mode in ['n', 'N']:
+            valid = True
+    valid = False
 
 
 def error(error_type=None):
