@@ -56,6 +56,7 @@ def zip_fetcher():
 
 
 def badge_lister():
+    global badges_available
     badges_available = os.listdir(badge_list_dir)
     shutil.rmtree('temp/m3-Markdown-Badges-master')
     for i in badges_available:
@@ -68,11 +69,17 @@ def badge_lister():
 
 
 def badge_comparator():
-    for wanted_badge in user_badge_list:
-        if wanted_badge in available_badge_list:
-            badge_list.append(wanted_badge)
-        else:
-            print(f'{Fore.YELLOW}Badge "{wanted_badge}" unavailable{Fore.RESET}')
+    if user_badge_list == ['*']:
+        for i in badges_available:
+            badge_list.append(i)
+            folder_names.append(i)
+        pass
+    else:
+        for wanted_badge in user_badge_list:
+            if wanted_badge in available_badge_list:
+                badge_list.append(wanted_badge)
+            else:
+                print(f'{Fore.YELLOW}Badge "{wanted_badge}" unavailable{Fore.RESET}')
 
 
 def html_tag_printer():
