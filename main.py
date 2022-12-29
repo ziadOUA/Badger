@@ -102,14 +102,8 @@ def variant_selector():
     while not valid:
         variants_wanted = str(input('Chose what variant you want\n 1: Variant 1\n 2: Variant 2\n 3: Variant 3\n R: '
                                     'Randomize\n *: All variants\n>>> '))
-        if variants_wanted == '1':
-            variant = 1
-            valid = True
-        elif variants_wanted == '2':
-            variant = 2
-            valid = True
-        elif variants_wanted == '3':
-            variant = 3
+        if variants_wanted in ['1', '2', '3']:
+            variant = int(variants_wanted)
             valid = True
         elif variants_wanted == '*':
             variant = 4
@@ -125,13 +119,7 @@ def html_tag_printer():
     folder_names.sort()
     new_line()
     for i in folder_names:
-        if variant == 1:
-            badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{variant}{svg_extension}">'
-            print(badge_tag)
-        if variant == 2:
-            badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{variant}{svg_extension}">'
-            print(badge_tag)
-        if variant == 3:
+        if variant in [1, 2, 3]:
             badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{variant}{svg_extension}">'
             print(badge_tag)
         if variant == 4:
