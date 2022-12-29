@@ -2,6 +2,7 @@
 
 import os
 import time
+import random
 
 import requests
 import io
@@ -24,9 +25,12 @@ space = ' '
 
 done = False
 valid = False
+variant = None
 
 available_badge_list = []
+badges_available = []
 badge_list = []
+user_badges = []
 user_badge_list = []
 folder_names = []
 
@@ -36,12 +40,13 @@ def badger():
     badge_user_input()
     badge_lister()
     badge_comparator()
+    variant_selector()
     html_tag_printer()
     markdown()
 
 
 def badge_user_input():
-    user_badges = []
+    global user_badges
     user_badges = str(input('Enter the badges you need, separated by a space >>> '))
     user_badges = user_badges.split(space)
     for i in user_badges:
@@ -82,33 +87,71 @@ def badge_comparator():
                 print(f'{Fore.YELLOW}Badge "{wanted_badge}" unavailable{Fore.RESET}')
 
 
+def variant_selector():
+    global valid
+    global variant
+    new_line()
+    while not valid:
+        variants_wanted = str(input('Chose what variant you want\n 1: Variant 1\n 2: Variant 2\n 3: Variant 3\n R: '
+                                    'Randomize\n *: All variants\n>>> '))
+        if variants_wanted == '1':
+            variant = 1
+            valid = True
+        elif variants_wanted == '2':
+            variant = 2
+            valid = True
+        elif variants_wanted == '3':
+            variant = 3
+            valid = True
+        elif variants_wanted == '*':
+            variant = 4
+            valid = True
+        elif variants_wanted in ['r', 'R']:
+            variant = 5
+            valid = True
+    valid = False
+
+
 def html_tag_printer():
     badge_list.sort()
     folder_names.sort()
     if len(badge_list) > 0:
         new_line()
         for i in folder_names:
-            for j in range(3):
-                badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{j + 1}{svg_extension}">'
+            if variant == 1:
+                badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{variant}{svg_extension}">'
+                print(badge_tag)
+            if variant == 2:
+                badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{variant}{svg_extension}">'
+                print(badge_tag)
+            if variant == 3:
+                badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{variant}{svg_extension}">'
+                print(badge_tag)
+            if variant == 4:
+                for j in range(3):
+                    badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{j + 1}{svg_extension}">'
+                    print(badge_tag)
+            if variant == 5:
+                badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{random.randint(1, 3)}{svg_extension}">'
                 print(badge_tag)
 
 
 def markdown():
-
     global valid
-
-    new_line()
-    while not valid:
-        is_markdown_mode = input('Print the markdown table for theses badges ?\n Y: yes\n N: no\n>>> ')
-        if is_markdown_mode in ['y', 'Y']:
-            valid = True
-            new_line()
-            for i in folder_names:
-                for j in range(3):
-                    badge_tag = f'| <img src="{base_link}/{i}/{i.lower()}{j + 1}{svg_extension}"> | `{base_link}/{i}/{i.lower()}{j + 1}{svg_extension}` |'
-                    print(badge_tag)
-        elif is_markdown_mode in ['n', 'N']:
-            valid = True
+    if len(badge_list) > 0:
+        new_line()
+        while not valid:
+            is_markdown_mode = input('Print the markdown table for theses badges ?\n Y: yes\n N: no\n>>> ')
+            if is_markdown_mode in ['y', 'Y']:
+                valid = True
+                new_line()
+                for i in folder_names:
+                    for j in range(3):
+                        badge_tag = f'| <img src="{base_link}/{i}/{i.lower()}{j + 1}{svg_extension}"> | `{base_link}' \
+                                    f'/{i}/{i.lower()}{j + 1}{svg_extension}` | '
+                        print(badge_tag)
+            elif is_markdown_mode in ['n', 'N']:
+                valid = True
     valid = False
 
 
