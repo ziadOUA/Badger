@@ -9,12 +9,17 @@ import io
 import zipfile
 import shutil
 
+from datetime import date
+
 from pyfiglet import Figlet
 from colorama import Fore, Back, init
 
 init(convert=True)
 
 start = Figlet(font='univers')
+
+today = date.today()
+today = today.strftime("%d/%m/%Y")
 
 base_link = 'https://ziadoua.github.io/m3-Markdown-Badges/badges'
 repo_branch_link = 'https://github.com/ziadOUA/m3-Markdown-Badges/archive/refs/heads/master.zip'
@@ -40,15 +45,18 @@ def badger():
     badge_user_input()
     badge_lister()
     badge_comparator()
-    variant_selector()
-    html_tag_printer()
-    markdown()
+    if len(badge_list) > 0:
+        variant_selector()
+        html_tag_printer()
+        markdown()
 
 
 def badge_user_input():
     global user_badges
     user_badges = str(input('Enter the badges you need, separated by a space >>> '))
     user_badges = user_badges.split(space)
+    while '' in user_badges:
+        user_badges.remove('')
     for i in user_badges:
         user_badge_list.append(i.lower())
     user_badge_list.sort()
@@ -115,43 +123,41 @@ def variant_selector():
 def html_tag_printer():
     badge_list.sort()
     folder_names.sort()
-    if len(badge_list) > 0:
-        new_line()
-        for i in folder_names:
-            if variant == 1:
-                badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{variant}{svg_extension}">'
+    new_line()
+    for i in folder_names:
+        if variant == 1:
+            badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{variant}{svg_extension}">'
+            print(badge_tag)
+        if variant == 2:
+            badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{variant}{svg_extension}">'
+            print(badge_tag)
+        if variant == 3:
+            badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{variant}{svg_extension}">'
+            print(badge_tag)
+        if variant == 4:
+            for j in range(3):
+                badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{j + 1}{svg_extension}">'
                 print(badge_tag)
-            if variant == 2:
-                badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{variant}{svg_extension}">'
-                print(badge_tag)
-            if variant == 3:
-                badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{variant}{svg_extension}">'
-                print(badge_tag)
-            if variant == 4:
-                for j in range(3):
-                    badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{j + 1}{svg_extension}">'
-                    print(badge_tag)
-            if variant == 5:
-                badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{random.randint(1, 3)}{svg_extension}">'
-                print(badge_tag)
+        if variant == 5:
+            badge_tag = f'<img src="{base_link}/{i}/{i.lower()}{random.randint(1, 3)}{svg_extension}">'
+            print(badge_tag)
 
 
 def markdown():
     global valid
-    if len(badge_list) > 0:
-        new_line()
-        while not valid:
-            is_markdown_mode = input('Print the markdown table for theses badges ?\n Y: yes\n N: no\n>>> ')
-            if is_markdown_mode in ['y', 'Y']:
-                valid = True
-                new_line()
-                for i in folder_names:
-                    for j in range(3):
-                        badge_tag = f'| <img src="{base_link}/{i}/{i.lower()}{j + 1}{svg_extension}"> | `{base_link}' \
-                                    f'/{i}/{i.lower()}{j + 1}{svg_extension}` | '
-                        print(badge_tag)
-            elif is_markdown_mode in ['n', 'N']:
-                valid = True
+    new_line()
+    while not valid:
+        is_markdown_mode = input('Print the markdown table for theses badges ?\n Y: yes\n N: no\n>>> ')
+        if is_markdown_mode in ['y', 'Y']:
+            valid = True
+            new_line()
+            for i in folder_names:
+                for j in range(3):
+                    badge_tag = f'| <img src="{base_link}/{i}/{i.lower()}{j + 1}{svg_extension}"> | `{base_link}' \
+                                f'/{i}/{i.lower()}{j + 1}{svg_extension}` | '
+                    print(badge_tag)
+        elif is_markdown_mode in ['n', 'N']:
+            valid = True
     valid = False
 
 
@@ -182,7 +188,7 @@ if __name__ == '__main__':
         except zipfile.BadZipfile:
             error(error_type='zip_fetch')
         badge_number = len(next(os.walk(badge_list_dir))[1])
-        print(f'There are {Back.WHITE + Fore.BLACK}{badge_number}{Back.RESET + Fore.RESET} badges available !')
+        print(f'{today}: There are {Back.WHITE + Fore.BLACK}{badge_number}{Back.RESET + Fore.RESET} badges available !')
         new_line()
         badger()
         new_line()
