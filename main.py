@@ -52,11 +52,15 @@ def badger():
 
 
 def badge_user_input():
-    global user_badges
-    user_badges = str(input('Enter the badges you need, separated by a space >>> '))
-    user_badges = user_badges.split(space)
-    while '' in user_badges:
-        user_badges.remove('')
+    global user_badges, valid
+    while not valid:
+        user_badges = str(input('Enter the badges you need, separated by a space >>> '))
+        user_badges = user_badges.split(space)
+        while '' in user_badges:
+            user_badges.remove('')
+        if len(user_badges) > 0:
+            valid = True
+    valid = False
     for i in user_badges:
         user_badge_list.append(i.lower())
     user_badge_list.sort()
