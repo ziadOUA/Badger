@@ -23,7 +23,7 @@ today = today.strftime("%d/%m/%Y")
 
 base_link = 'https://ziadoua.github.io/m3-Markdown-Badges/badges'
 repo_branch_link = 'https://github.com/ziadOUA/m3-Markdown-Badges/archive/refs/heads/master.zip'
-badge_list_dir = 'temp/m3-Markdown-Badges-master/badges'
+badge_list_dir = 'badgerTemp/m3-Markdown-Badges-master/badges'
 
 svg_extension = '.svg'
 space = ' '
@@ -41,7 +41,6 @@ folder_names = []
 
 
 def badger():
-
     badge_user_input()
     badge_lister()
     badge_comparator()
@@ -69,13 +68,13 @@ def badge_user_input():
 def zip_fetcher():
     request = requests.get(repo_branch_link)
     zip_file = zipfile.ZipFile(io.BytesIO(request.content))
-    zip_file.extractall('temp/')
+    zip_file.extractall('badgerTemp/')
 
 
 def badge_lister():
     global badges_available
     badges_available = os.listdir(badge_list_dir)
-    shutil.rmtree('temp/m3-Markdown-Badges-master')
+    shutil.rmtree('badgerTemp')
     for i in badges_available:
         available_badge_list.append(i.lower())
     for i in badges_available:
@@ -143,14 +142,18 @@ def markdown():
         if is_markdown_mode in ['y', 'Y']:
             valid = True
             new_line()
-            for i in folder_names:
-                for j in range(3):
-                    badge_tag = f'| <img src="{base_link}/{i}/{i.lower()}{j + 1}{svg_extension}"> | `{base_link}' \
-                                f'/{i}/{i.lower()}{j + 1}{svg_extension}` | '
-                    print(badge_tag)
+            markdown_printer()
         elif is_markdown_mode in ['n', 'N']:
             valid = True
     valid = False
+
+
+def markdown_printer():
+    for i in folder_names:
+        for j in range(3):
+            badge_tag = f'| <img src="{base_link}/{i}/{i.lower()}{j + 1}{svg_extension}"> | `{base_link}' \
+                        f'/{i}/{i.lower()}{j + 1}{svg_extension}` | '
+            print(badge_tag)
 
 
 def error(error_type=None):
